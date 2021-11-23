@@ -1,6 +1,15 @@
 from numpy import random
+import numpy as np
 import matplotlib.pyplot as plt
+from numpy.random.mtrand import randint
 import seaborn as sns
+import math
+
+_prim_len = 100
+_padding = 10
+_mew = 10
+_sigma = 5
+_lambda = 1
 
 
 class treeNode:
@@ -8,7 +17,7 @@ class treeNode:
         self.seq = seq
         self.left = None
         self.right = None
-    
+
     def is_leaf(self):
         if self.left or self.right:
             return False
@@ -20,6 +29,7 @@ class treeNode:
         left_str = self.left.get_newic()
         right_str = self.right.get_newic()
         return '(' + left_str + ',' + right_str + ')'
+
 
 N1 = treeNode('a')
 N2 = treeNode('b')
@@ -41,8 +51,9 @@ N9.right = N8
 
 print(N9.get_newic())
 
+
 def get_prim_seq():
-    str = 'A'*25000 + 'T'*25000 + 'G'*25000 + 'C'*25000
+    str = 'A'*(_prim_len//4) + 'T'*(_prim_len//4) + 'G'*(_prim_len//4) + 'C'*(_prim_len//4)
     l = list(str)
     random.shuffle(l)
     str = ''.join(l)
@@ -50,6 +61,65 @@ def get_prim_seq():
 
 
 def deletion(seq):
-    pass
+    # from where
+    f = random.randint(_padding, len(seq)-_padding)
+    # how much
+    l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    while l <= 0 or f+l >= len(seq)-_padding:
+        l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    str = seq[:f] + seq[f+l:]
+    return str
 
-print(get_prim_seq())
+
+def tendem_repeat(seq):
+    # from where
+    f = random.randint(_padding, len(seq)-_padding)
+    # how much
+    l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    while l <= 0 or f+l >= len(seq)-_padding:
+        l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    # how many
+    m = random.poisson(lam=_lambda) + 1
+    rep = '(' + seq[f:f+l] + ')'
+    str = seq[:f+l] + rep*m + seq[f+l:]
+
+    # seq = seq[:f] + '(' + seq[f:f+l] + ')' + seq[f+l:]
+    # print("Bef tendem: %s"%(seq))
+    # print("Aft tendem: %s"%(str))
+    return str
+
+
+def duplication(seq):
+    # from where
+    f = random.randint(_padding, len(seq)-_padding)
+    # how much
+    l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    while l <= 0 or f+l >= len(seq)-_padding:
+        l = math.floor(random.normal(loc=_mew, scale=_sigma))
+    # how many
+    m = random.poisson(lam=_lambda) + 1
+    # to where
+    arr = []
+    for i in range(m):
+        num = random.randint(_padding, len(seq)-_padding)
+        while num >= f and num < f+l:
+            num = random.randint(_padding, len(seq)-_padding)
+        arr.append(num)
+    arr.sort()
+
+    str = seq[:]
+    rep = '(' + seq[f:f+l] + ')'
+    for i in range(len(arr)):
+        str = str[:arr[i]+i*l] + rep + str[arr[i]+i*l:]
+
+    # seq = seq[:f] + '(' + seq[f:f+l] + ')' + seq[f+l:]
+    # print("Bef dup: %s"%(seq))
+    # print("Aft dup: %s"%(str))
+    return str
+
+
+str = get_prim_seq()
+print(str)
+
+tendem_repeat(str)
+duplication(str)
