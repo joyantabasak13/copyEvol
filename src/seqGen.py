@@ -1,6 +1,7 @@
 from numpy import random
 import matplotlib.pyplot as plt
 import seaborn as sns
+import os
 
 
 class treeNode:
@@ -52,4 +53,22 @@ def get_prim_seq():
 def deletion(seq):
     pass
 
-print(get_prim_seq())
+
+def write_to_fasta(seq):
+    path = os.path.abspath("../data/ref.txt")
+    outfile = open(path, "w")
+    outfile.write(">" + "primary_seq" + "\n" + seq + "\n")
+    outfile.close()
+
+
+def write_to_newick(root):
+    path = os.path.abspath("../data/ref_tree.newick")
+    outfile = open(path, "w")
+    outstr = root.get_newic()
+    outstr = "[&R] " + outstr + ";"
+    outfile.write(outstr)
+    outfile.close()
+
+
+write_to_fasta(get_prim_seq())
+write_to_newick(N9)
