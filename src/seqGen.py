@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from numpy.random.mtrand import randint
 import seaborn as sns
+<<<<<<< HEAD
 import math
 
 _prim_len = 100
@@ -10,6 +11,9 @@ _padding = 10
 _mew = 10
 _sigma = 5
 _lambda = 1
+=======
+import os
+>>>>>>> acf38f6f6aa30b25b1f7018ea7f8f82651cd53be
 
 
 class treeNode:
@@ -121,5 +125,27 @@ def duplication(seq):
 str = get_prim_seq()
 print(str)
 
+<<<<<<< HEAD
 tendem_repeat(str)
 duplication(str)
+=======
+
+def write_to_fasta(seq):
+    path = os.path.abspath("../data/ref.txt")
+    outfile = open(path, "w")
+    outfile.write(">" + "primary_seq" + "\n" + seq + "\n")
+    outfile.close()
+
+
+def write_to_newick(root):
+    path = os.path.abspath("../data/ref_tree.newick")
+    outfile = open(path, "w")
+    outstr = root.get_newic()
+    outstr = "[&R] " + outstr + ";"
+    outfile.write(outstr)
+    outfile.close()
+
+
+write_to_fasta(get_prim_seq())
+write_to_newick(N9)
+>>>>>>> acf38f6f6aa30b25b1f7018ea7f8f82651cd53be
