@@ -1,0 +1,34 @@
+Using NEAT
+----------
+python3 gen_reads.py -r ref.fasta -R 101 -o ref_reads --pe 300 30 -c 30 --bam
+
+using samtools:
+---------------
+Mapped:
+/usr/bin/samtools-1.9/samtools view -b -F 4 ref_reads.bam > mapped.bam
+Unmapped:
+/usr/bin/samtools-1.9/samtools view -b -f 4 file.bam > unmapped.bam
+
+
+VarScan
+-------
+/usr/bin/samtools-1.9/samtools mpileup -q 1 -f ref.fasta ref_reads_golden.bam a_reads_golden.bam | java -jar VarScan.v2.3.9.jar copynumber output.basename --mpileup 1
+
+java -jar VarScan.v2.3.9.jar copyCaller output.copynumber --output-file copyCalled.output
+
+
+Pasta
+-----
+Concatenating to fasta:
+cat ref* >> big.fasta
+
+python run_pasta.py -i /home/joyanta/Documents/MSc/Bioinformatics/copyEvolProject/dataset/big.fasta
+
+PhyML
+-----
+Convert Pasta aligned fasta to phylip
+use --> http://atgc.lirmm.fr/phyml/
+
+CGAL
+----
+
