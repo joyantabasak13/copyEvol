@@ -1,6 +1,7 @@
 Using NEAT
 ----------
 python3 gen_reads.py -r ref.fasta -R 101 -o ref_reads --pe 300 30 -c 30 --bam
+python3 gen_reads.py -r c.fasta -R 101 -o c_reads --pe 300 30 -c 30 --bam
 
 using samtools:
 ---------------
@@ -9,10 +10,11 @@ Mapped:
 Unmapped:
 /usr/bin/samtools-1.9/samtools view -b -f 4 file.bam > unmapped.bam
 
+/usr/bin/samtools-1.9/wgsim ref.fasta ref_r1.fastq ref_r2.fastq
 
 VarScan
 -------
-/usr/bin/samtools-1.9/samtools mpileup -q 1 -f ref.fasta ref_reads_golden.bam a_reads_golden.bam | java -jar VarScan.v2.3.9.jar copynumber output.basename --mpileup 1
+/usr/bin/samtools-1.9/samtools mpileup -q 1 -f ref.fasta ref_reads_golden.bam c_reads_golden.bam | java -jar VarScan.v2.3.9.jar copynumber output.basename --mpileup 1
 
 java -jar VarScan.v2.3.9.jar copyCaller output.copynumber --output-file copyCalled.output
 
@@ -29,6 +31,15 @@ PhyML
 Convert Pasta aligned fasta to phylip
 use --> http://atgc.lirmm.fr/phyml/
 
+Bowtie
+------
+bowtie2-build ref.fasta ref_idx
+bowtie2 --no-mixed -x ref_idx -1 a_reads_read1.fq.gz -2 a_reads_read2.fq.gz -S a_ref.sam
+
 CGAL
 ----
+./bowtie2convert out.sam maxFragmentLength
+./align contigFile toAlign numThreads
+./cgal contigFile
+
 
