@@ -31,7 +31,7 @@ def deletion(seq):
     l = math.floor(random.normal(loc=_mu, scale=_sigma))
     while l <= 0 or f+l >= len(seq)-_padding:
         l = math.floor(random.normal(loc=_mu, scale=_sigma))
-        print('Inside deletion')
+        # print('Inside deletion')
     str = seq[:f] + seq[f+l:]
     return str
 
@@ -43,7 +43,7 @@ def tendem_repeat(seq):
     l = math.floor(random.normal(loc=_mu, scale=_sigma))
     while l <= 0 or f+l >= len(seq)-_padding:
         l = math.floor(random.normal(loc=_mu, scale=_sigma))
-        print('Inside tendem')
+        # print('Inside tendem')
     # how many
     m = random.poisson(lam=_lambda) + 1
 
@@ -52,8 +52,8 @@ def tendem_repeat(seq):
     str = seq[:f+l] + rep*m + seq[f+l:]
 
     # seq = seq[:f] + '(' + seq[f:f+l] + ')' + seq[f+l:]
-    # print("Bef tendem: %s"%(seq))
-    # print("Aft tendem: %s"%(str))
+    # print('Bef tendem: %s'%(seq))
+    # print('Aft tendem: %s'%(str))
     return str
 
 
@@ -64,7 +64,7 @@ def duplication(seq):
     l = math.floor(random.normal(loc=_mu, scale=_sigma))
     while l <= 0 or f+l >= len(seq)-_padding:
         l = math.floor(random.normal(loc=_mu, scale=_sigma))
-        print('Inside duplication 1')
+        # print('Inside duplication 1')
     # how many
     m = random.poisson(lam=_lambda) + 1
     # to where
@@ -73,7 +73,7 @@ def duplication(seq):
         pos = random.randint(0, len(seq))
         while pos >= f and pos < f+l:  # so that duplication is not placed within duplication
             pos = random.randint(0, len(seq))
-            print('Inside duplication 2')
+            # print('Inside duplication 2')
         arr.append(pos)
     arr.sort()
 
@@ -84,13 +84,13 @@ def duplication(seq):
         str = str[:arr[i]+i*l] + rep + str[arr[i]+i*l:]
 
     # seq = seq[:f] + '(' + seq[f:f+l] + ')' + seq[f+l:]
-    # print("Bef dup: %s"%(seq))
-    # print("Aft dup: %s"%(str))
+    # print('Bef dup: %s'%(seq))
+    # print('Aft dup: %s'%(str))
     return str
 
 
 def mutation(seq):
-    # print("mutation on %s" % (seq))
+    # print('mutation on %s' % (seq))
     new_seq = seq
     m = random.poisson(lam=_lambda_tree)
     arr = random.randint(1, 3, size=m)
@@ -152,17 +152,17 @@ N19 = treeNode(mutation(N17.seq), 'j')
 
 
 def write_to_fasta(label, seq):
-    path = os.path.abspath("..\copyEvol\data\%s.txt" % (label))
-    outfile = open(path, "w")
-    outfile.write(">" + label + "\n" + seq + "\n")
+    path = os.path.abspath('..\copyEvol\data\%s.txt' % (label))
+    outfile = open(path, 'w')
+    outfile.write('>' + label + '\n' + seq + '\n')
     outfile.close()
 
 
 def write_to_newick(root):
-    path = os.path.abspath("..\copyEvol\data\ref_tree.newick")
-    outfile = open(path, "w")
+    path = os.path.abspath('..\copyEvol\data\ref_tree.newick')
+    outfile = open(path, 'w')
     outstr = root.get_newic()
-    outstr = "[&R] " + outstr + ";"
+    outstr = '[&R] ' + outstr + ';'
     outfile.write(outstr)
     outfile.close()
 
